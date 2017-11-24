@@ -1,0 +1,140 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "project_name": {
+            "defaultValue": "container-appservice",
+            "type": "string"
+        },
+        "environment_name": {
+            "allowedValues": [ 
+                "ci",
+                "test",
+                "prod" 
+            ],
+            "defaultValue": "ci",
+            "type": "string"
+        },
+        "docker_image_name_with_registry": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "instance_name": "[concat(parameters('environment_name'), '-', parameters('project_name'))]",
+        "appinsights_name": "[concat(variables('instance_name'), '-ai')]",
+        "hosting_plan_name": "[concat(variables('instance_name'), '-plan')]",
+        "hostname_binding": "[concat(variables('instance_name'), '.azurewebsites.net')]",
+        "container_full_setting": "[concat('DOCKER|', parameters('docker_image_name_with_registry'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
+            },
+            "kind": "linux",
+            "name": "[variables('hosting_plan_name')]",
+            "apiVersion": "2016-09-01",
+            "scale": null,
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[variables('hosting_plan_name')]",
+                "reserved": true
+            },
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "kind": "app,linux",
+            "name": "[variables('instance_name')]",
+            "apiVersion": "2016-08-01",
+            "location": "[resourceGroup().location]",
+            "scale": null,
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[variables('hostname_binding')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(variables('instance_name'),'.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hosting_plan_name'))]",
+                "reserved": true,
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "Name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "Value": "[reference(concat('microsoft.insights/components/', variables('appinsights_name'))).InstrumentationKey]"
+                        }
+                    ]
+                },
+                "clientAffinityEnabled": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('hosting_plan_name'))]",
+                "[resourceId('microsoft.insights/components/', variables('appinsights_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "name": "[concat(variables('instance_name'), '/web')]",
+            "apiVersion": "2016-08-01",
+            "location": "[resourceGroup().location]",
+            "scale": null,
+            "properties": {
+                "numberOfWorkers": "1",
+                "linuxFxVersion": "[variables('container_full_setting')]",
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "scmType": "None",
+                "alwaysOn": true,
+                "loadBalancing": "LeastRequests",
+                "cors": null,
+                "ipSecurityRestrictions": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('instance_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "name": "[concat(variables('instance_name'), '/', variables('hostname_binding'))]",
+            "apiVersion": "2016-08-01",
+            "location": "[resourceGroup().location]",
+            "scale": null,
+            "properties": {
+                "siteName": "[variables('instance_name')]",
+                "domainId": null,
+                "hostNameType": "Verified"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('instance_name'))]"
+            ]
+        },
+        {
+            "name": "[variables('appinsights_name')]",
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2015-05-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', variables('instance_name'))]": "Resource",
+                "displayName": "AppInsightsComponent"
+            },
+            "kind": "web",
+            "properties": {
+                "applicationId": "[variables('appinsights_name')]"
+            }
+        }
+    ]
+}

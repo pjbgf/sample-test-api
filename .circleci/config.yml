@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run: dotnet restore src
       - run: dotnet build src
-      - run: dotnet test src/Sample.Tests
+      - run: dotnet test src/Abc.Tests
 
       # Once unit-tests pass, create docker image
       # For security purposes, circleci requires this step to isolate remote docker commands. 
@@ -23,10 +23,10 @@ jobs:
       # 
       # Potentially something to review at a later stage.
       - run: |
-          dotnet publish src/Sample.Web.Api/Sample.Web.Api.csproj -c Release -f netcoreapp2.0
-          cp src/Dockerfile src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
+          dotnet publish src/Abc.Web.Api/Abc.Web.Api.csproj -c Release -f netcoreapp2.0
+          cp src/Dockerfile src/Abc.Web.Api/bin/Release/netcoreapp2.0/publish/
 
-          docker build --rm --no-cache -t $DOCKER_IMAGE_NAME_WITH_REGISTRY src/Sample.Web.Api/bin/Release/netcoreapp2.0/publish/
+          docker build --rm --no-cache -t $DOCKER_IMAGE_NAME_WITH_REGISTRY src/Abc.Web.Api/bin/Release/netcoreapp2.0/publish/
           docker login $DOCKER_REGISTRY_URI -u $DOCKER_REGISTRY_SERVER_USERNAME -p $DOCKER_REGISTRY_SERVER_PASSWORD
           docker push $DOCKER_IMAGE_NAME_WITH_REGISTRY
 

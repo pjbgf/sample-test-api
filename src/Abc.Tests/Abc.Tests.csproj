@@ -9,9 +9,9 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sample.Web.Api\Sample.Web.Api.csproj">
+    <ProjectReference Include="..\Abc.Web.Api\Abc.Web.Api.csproj">
       <Project>{1CEA63F1-18E2-443F-A1B3-D52435AD4744}</Project>
-      <Name>Sample.Web.Api</Name>
+      <Name>Abc.Web.Api</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

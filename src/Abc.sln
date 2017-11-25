@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web.Api", "Sample.Web.Api\Sample.Web.Api.csproj", "{1CEA63F1-18E2-443F-A1B3-D52435AD4744}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abc.Web.Api", "Abc.Web.Api\Abc.Web.Api.csproj", "{1CEA63F1-18E2-443F-A1B3-D52435AD4744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Tests", "Sample.Tests\Sample.Tests.csproj", "{4FF5349C-B7E2-45F0-85DF-981A74591F14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abc.Tests", "Abc.Tests\Abc.Tests.csproj", "{4FF5349C-B7E2-45F0-85DF-981A74591F14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

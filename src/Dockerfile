@@ -1,4 +1,4 @@
 FROM microsoft/aspnetcore:2.0
 WORKDIR /app
 COPY . .
-ENTRYPOINT ["dotnet", "Sample.Web.Api.dll"]
+ENTRYPOINT ["dotnet", "Abc.Web.Api.dll"]

@@ -7,7 +7,7 @@ set -euo pipefail
 # Set all non-sensitive variables here:
 declare variables='DEPLOY_CI_RESOURCE_GROUP=ci-container-appservice-euw
 DEPLOY_CI_LOCATION=westeurope
-DEPLOY_CI_WEBAPP_NAME=container-appservice
+DEPLOY_CI_WEBAPP_NAME=ci-container-appservice
 DOCKER_REGISTRY_URI=https://pjbgf.azurecr.io
 DOCKER_IMAGE_NAME_WITH_REGISTRY=pjbgf.azurecr.io/sample/container-appservice'
 

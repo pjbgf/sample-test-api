@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Sample.Web.Api.Controllers;
+using Abc.Web.Api.Controllers;
 using Xunit;
 
-namespace Sample.Tests.Web.Api.Controllers
+namespace Abc.Tests.Web.Api.Controllers
 {
     public class HealthControllerShould
     {

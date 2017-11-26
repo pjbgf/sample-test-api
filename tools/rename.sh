@@ -26,6 +26,9 @@ rm src/$new_project_name.sln.bkp
 sed -i .bkp $sed_expression src/$new_project_name.Tests/$new_project_name.Tests.csproj
 rm src/$new_project_name.Tests/$new_project_name.Tests.csproj.bkp
 
+sed -i .bkp $sed_expression **/*.cs
+rm **/*.cs.bkp
+
 
 echo Renaming finished. To rollback changes, use the commands below:
 echo git reset HEAD --hard

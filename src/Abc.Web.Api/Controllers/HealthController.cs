@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Sample.Web.Api.Controllers
+namespace Abc.Web.Api.Controllers
 {
     public class HealthController : Controller
     {
